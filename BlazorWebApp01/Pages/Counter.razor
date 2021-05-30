@@ -1,0 +1,22 @@
+﻿@page "/counter"
+@using BlazorWebApp01.Pages.Components
+
+<h1>Etapas</h1>
+
+<button class="btn btn-secondary" @onclick="MostrarEtapas">Mostrar Etapas</button>
+
+@if (etapasExibidas)
+{
+    <Etapas></Etapas>
+}
+
+@code {
+
+    private bool etapasExibidas = false;
+
+    private void MostrarEtapas()
+    {
+        etapasExibidas = !etapasExibidas;
+    }
+
+}

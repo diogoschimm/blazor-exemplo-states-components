@@ -1,0 +1,74 @@
+﻿@using BlazorWebApp01.Services.Contracts
+@using BlazorWebApp01.Services.ViewModels
+
+@inject IClienteService clienteService
+
+<h3>Componente de Etapas</h3>
+
+@dataExibicao
+
+<Etapa1 Visible="etapa == 1" DataExibicaoPai="dataExibicao" Clientes="clientes"></Etapa1>
+<Etapa2 Visible="etapa == 2" DataExibicaoPai="dataExibicao"></Etapa2>
+<Etapa3 Visible="etapa == 3" DataExibicaoPai="dataExibicao"></Etapa3>
+
+<button class="btn btn-secondary" @onclick="Voltar" disabled="@disableVoltar">Voltar</button>
+<button class="btn btn-primary" @onclick="Avancar" disabled="@disableAvancar">Avançar</button>
+
+@if (carregando)
+{
+    <p>
+        Carregando ....
+    </p>
+}
+
+
+@code {
+    private int etapa;
+
+    private DateTime dataExibicao;
+
+    private bool disableVoltar;
+    private bool disableAvancar;
+
+    private bool carregando;
+
+    private List<Cliente> clientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        dataExibicao = DateTime.Now;
+        etapa = 1;
+        carregando = true;
+        DisableButtons();
+
+        await Task.Run(() =>
+        {
+            clientes = clienteService.GetAll().Result;
+            carregando = false;
+        });
+
+    }
+
+    private void Voltar()
+    {
+        if (etapa > 1)
+            etapa--;
+
+        DisableButtons();
+    }
+
+    private void Avancar()
+    {
+        if (etapa < 3)
+            etapa++;
+
+        DisableButtons();
+    }
+
+    private void DisableButtons()
+    {
+        disableVoltar = etapa == 1;
+        disableAvancar = etapa == 3;
+    }
+
+}

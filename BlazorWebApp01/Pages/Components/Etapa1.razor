@@ -1,0 +1,33 @@
+﻿@using BlazorWebApp01.Services.ViewModels
+
+@if (Visible)
+{
+    <h3>Etapa 1 - Data de exibição do Filho @data</h3>
+    <h3>Data Exibição do Pai @DataExibicaoPai</h3>
+
+    @if (Clientes != null)
+    {
+        @foreach (var cliente in Clientes)
+        {
+            <p>@cliente.NomeCliente</p>
+        }
+    }
+}
+@code {
+
+    [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
+    public DateTime DataExibicaoPai { get; set; }
+
+    [Parameter]
+    public List<Cliente> Clientes { get; set; }
+
+    private string data = "";
+
+    protected override void OnInitialized()
+    {
+        data = $"Chamou em: {DateTime.Now.ToString()}";
+    }
+}
